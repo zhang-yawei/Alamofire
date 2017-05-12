@@ -29,7 +29,12 @@ class DetailViewController: UITableViewController {
     enum Sections: Int {
         case headers, body
     }
-
+/* 属性观察器
+     1. willset didset
+     2. 父类的属性在子类的构造器中被赋值时，它在父类中的 willSet 和 didSet 观察器会被调用，随后才会调用子类的观察器。在父类初始化方法调用之前，子类给属性赋值时，观察器不会被调用。
+     3. 全局的常量或变量都是延迟计算的，跟延迟存储属性相似，不同的地方在于，全局的常量或变量不需要标记lazy修饰符。
+     
+     */
     var request: Alamofire.Request? {
         didSet {
             oldValue?.cancel()
@@ -141,6 +146,8 @@ class DetailViewController: UITableViewController {
 }
 
 // MARK: - UITableViewDataSource
+
+
 
 extension DetailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

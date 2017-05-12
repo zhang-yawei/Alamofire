@@ -34,6 +34,9 @@ class ProxyURLProtocol: URLProtocol {
         static let handledByForwarderURLProtocol = "HandledByProxyURLProtocol"
     }
 
+    // lazy 属性,只有第一次访问的时候,才会创建
+    // 如果一个被标记为 lazy 的属性在没有初始化时就同时被多个线程访问，则无法保证该属性只会被初始化一次。
+    
     lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = {
             let configuration = URLSessionConfiguration.ephemeral

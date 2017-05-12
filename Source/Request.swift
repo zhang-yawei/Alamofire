@@ -64,6 +64,8 @@ protocol TaskConvertible {
 }
 
 /// A dictionary of headers to apply to a `URLRequest`.
+
+// typealias 类型别名
 public typealias HTTPHeaders = [String: String]
 
 // MARK: -

@@ -45,6 +45,9 @@ open class SessionManager {
 
     /// A default instance of `SessionManager`, used by top-level Alamofire request methods, and suitable for use
     /// directly for any ad hoc requests.
+    
+   // 如果你需要使用与Swift保留关键字相同的名称作为常量或者变量名，你可以使用反引号(`)将关键字包围的方 式将其作为名字使用。无论如何，你应当避免使用关键字作为常量或变量名，除非你别无选择。
+
     open static let `default`: SessionManager = {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
@@ -67,15 +70,21 @@ open class SessionManager {
         // Example: `iOS Example/1.0 (org.alamofire.iOS-Example; build:1; iOS 10.0.0) Alamofire/4.0.0`
         let userAgent: String = {
             if let info = Bundle.main.infoDictionary {
+                // ?? 提供一个默认值
                 let executable = info[kCFBundleExecutableKey as String] as? String ?? "Unknown"
+                // bundle id
                 let bundle = info[kCFBundleIdentifierKey as String] as? String ?? "Unknown"
+                // 版本号
                 let appVersion = info["CFBundleShortVersionString"] as? String ?? "Unknown"
+                //
                 let appBuild = info[kCFBundleVersionKey as String] as? String ?? "Unknown"
 
+                // 系统版本号
                 let osNameVersion: String = {
                     let version = ProcessInfo.processInfo.operatingSystemVersion
                     let versionString = "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)"
 
+                    
                     let osName: String = {
                         #if os(iOS)
                             return "iOS"
@@ -96,7 +105,7 @@ open class SessionManager {
                 }()
 
                 let alamofireVersion: String = {
-                    guard
+                    guard  // 如果不为真,执行else
                         let afInfo = Bundle(for: SessionManager.self).infoDictionary,
                         let build = afInfo["CFBundleShortVersionString"]
                     else { return "Unknown" }

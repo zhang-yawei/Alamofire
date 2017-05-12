@@ -101,6 +101,9 @@ public class NetworkReachabilityManager {
     /// - parameter host: The host used to evaluate network reachability.
     ///
     /// - returns: The new `NetworkReachabilityManager` instance.
+    
+    //便利构造器 总是横向调用,调用类中的其他构造器.
+    // 指定构造器,需要调用父类的构造器. 总是上下调用
     public convenience init?(host: String) {
         guard let reachability = SCNetworkReachabilityCreateWithName(nil, host) else { return nil }
         self.init(reachability: reachability)

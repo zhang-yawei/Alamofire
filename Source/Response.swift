@@ -413,6 +413,7 @@ extension DownloadResponse {
 
 // MARK: -
 
+
 protocol Response {
     /// The task metrics containing the request / response statistics.
     var _metrics: AnyObject? { get set }

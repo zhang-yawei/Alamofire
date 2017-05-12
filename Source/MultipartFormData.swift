@@ -514,6 +514,8 @@ open class MultipartFormData {
         return try write(&buffer, to: outputStream)
     }
 
+// 输入输出参数 inout 在函数体内可以改变参数
+// 在调用函数前,参数前要加 &前缀
     private func write(_ buffer: inout [UInt8], to outputStream: OutputStream) throws {
         var bytesToWrite = buffer.count
 

@@ -46,6 +46,7 @@ class MasterViewController: UITableViewController {
         if let split = splitViewController {
             let controllers = split.viewControllers
 
+            // 取到detailViewController
             if
                 let navigationController = controllers.last as? UINavigationController,
                 let topViewController = navigationController.topViewController as? DetailViewController

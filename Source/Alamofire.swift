@@ -128,6 +128,9 @@ extension URLRequest {
 /// - parameter headers:    The HTTP headers. `nil` by default.
 ///
 /// - returns: The created `DataRequest`.
+
+
+// 可废弃的返回结果 即时返回值可以不使用
 @discardableResult
 public func request(
     _ url: URLConvertible,
@@ -374,6 +377,7 @@ public func upload(_ stream: InputStream, with urlRequest: URLRequestConvertible
 /// - parameter headers:                 The HTTP headers. `nil` by default.
 /// - parameter encodingCompletion:      The closure called when the `MultipartFormData` encoding is complete.
 public func upload(
+    // @escaping  逃逸闭包 逃逸闭包中,要显式的引用self
     multipartFormData: @escaping (MultipartFormData) -> Void,
     usingThreshold encodingMemoryThreshold: UInt64 = SessionManager.multipartFormDataEncodingMemoryThreshold,
     to url: URLConvertible,
