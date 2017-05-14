@@ -25,6 +25,8 @@
 import Foundation
 
 /// Responsible for managing the mapping of `ServerTrustPolicy` objects to a given host.
+
+// 信任策略
 open class ServerTrustPolicyManager {
     /// The dictionary of policies mapped to a particular host.
     open let policies: [String: ServerTrustPolicy]
@@ -63,6 +65,7 @@ extension URLSession {
         static var managerKey = "URLSession.ServerTrustPolicyManager"
     }
 
+    // 计算属性
     var serverTrustPolicyManager: ServerTrustPolicyManager? {
         get {
             return objc_getAssociatedObject(self, &AssociatedKeys.managerKey) as? ServerTrustPolicyManager
@@ -127,9 +130,13 @@ public enum ServerTrustPolicy {
     /// - parameter bundle: The bundle to search for all `.cer` files.
     ///
     /// - returns: All certificates within the given bundle.
+    
+    // 返回证书信息的数组
     public static func certificates(in bundle: Bundle = Bundle.main) -> [SecCertificate] {
         var certificates: [SecCertificate] = []
 
+        // 对于数组[cer,CER]中的元素,依次执行map闭包,返回一个path数组,然后把paths拼接在一起,用empty分割
+        // 集合可以用数组字面量创建
         let paths = Set([".cer", ".CER", ".crt", ".CRT", ".der", ".DER"].map { fileExtension in
             bundle.paths(forResourcesOfType: fileExtension, inDirectory: nil)
         }.joined())
@@ -151,6 +158,7 @@ public enum ServerTrustPolicy {
     /// - parameter bundle: The bundle to search for all `*.cer` files.
     ///
     /// - returns: All public keys within the given bundle.
+    /// 所有的公钥数组
     public static func publicKeys(in bundle: Bundle = Bundle.main) -> [SecKey] {
         var publicKeys: [SecKey] = []
 

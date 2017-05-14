@@ -60,6 +60,8 @@ public protocol RequestRetrier {
 // MARK: -
 
 protocol TaskConvertible {
+    
+    // session,request,queue,生成一个task
     func task(session: URLSession, adapter: RequestAdapter?, queue: DispatchQueue) throws -> URLSessionTask
 }
 
@@ -77,8 +79,16 @@ open class Request {
     // MARK: Helper Types
 
     /// A closure executed when monitoring upload or download progress of a request.
+
+    
+/* 闭包的格式
+    { (parameters) -> returnType in
+    statements
+    }
+ */
     public typealias ProgressHandler = (Progress) -> Void
 
+    // 带有关联值的枚举.
     enum RequestTask {
         case data(TaskConvertible?, URLSessionTask?)
         case download(TaskConvertible?, URLSessionTask?)

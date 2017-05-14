@@ -40,9 +40,26 @@ public enum AFError: Error {
     ///                               encoding process.
     /// - propertyListEncodingFailed: Property list serialization failed with an underlying system error during
     ///                               encoding process.
+    
+    
+    /* 枚举
+     枚举在swift中是一等类型(first-class).
+     枚举可以有计算属性,实例方法,构造方法
+     定义枚举是,成员不会被默认赋予一个整形的值.而成员本身就是一个完备的值. 值的类,就是这个枚举类型.
+     
+     
+     
+     
+     */
+    
+    
+    
+    
+    //
+    
     public enum ParameterEncodingFailureReason {
         case missingURL
-        case jsonEncodingFailed(error: Error)
+        case jsonEncodingFailed(error: Error)   // 关联值吗???
         case propertyListEncodingFailed(error: Error)
     }
 

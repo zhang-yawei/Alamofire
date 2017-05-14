@@ -26,6 +26,9 @@ import Foundation
 
 /// Types adopting the `URLConvertible` protocol can be used to construct URLs, which are then used to construct
 /// URL requests.
+
+// protocol + extension 的方式
+
 public protocol URLConvertible {
     /// Returns a URL that conforms to RFC 2396 or throws an `Error`.
     ///
@@ -35,6 +38,7 @@ public protocol URLConvertible {
     func asURL() throws -> URL
 }
 
+// 给String添加转化为url的扩展
 extension String: URLConvertible {
     /// Returns a URL if `self` represents a valid URL string that conforms to RFC 2396 or throws an `AFError`.
     ///
@@ -78,6 +82,8 @@ public protocol URLRequestConvertible {
 
 extension URLRequestConvertible {
     /// The URL request.
+    
+    // try? 将结果转换为可选的。如果函数抛出错误，该错误会被抛弃并且结果为 ni l
     public var urlRequest: URLRequest? { return try? asURLRequest() }
 }
 
@@ -97,19 +103,23 @@ extension URLRequest {
     ///
     /// - returns: The new `URLRequest` instance.
     public init(url: URLConvertible, method: HTTPMethod, headers: HTTPHeaders? = nil) throws {
+        // 因为此构造函数可以抛出错误,所以 使用try 关键字
+        // 把实现了URLConvertible协议的对象转化为url
         let url = try url.asURL()
 
         self.init(url: url)
-
+        
         httpMethod = method.rawValue
 
         if let headers = headers {
             for (headerField, headerValue) in headers {
+                // 调用self.setValue()
                 setValue(headerValue, forHTTPHeaderField: headerField)
             }
         }
     }
 
+    // 改装request
     func adapt(using adapter: RequestAdapter?) throws -> URLRequest {
         guard let adapter = adapter else { return self }
         return try adapter.adapt(self)
@@ -131,7 +141,11 @@ extension URLRequest {
 
 
 // 可废弃的返回结果 即时返回值可以不使用
+
+// 并没有类.
 @discardableResult
+
+// 如果参数缺失,则使用默认参数
 public func request(
     _ url: URLConvertible,
     method: HTTPMethod = .get,

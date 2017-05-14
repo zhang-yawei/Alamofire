@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // MARK: - UIApplicationDelegate
     
 
-    // didFinishLaunchingWithOptions 参数标签   argument label 
+    // didFinishLaunchingWithOptions 参数标签   argument label   或者参数的外部名称
     // 默认情况下,函数使用参数名称作为参数标签.
     // 如果你不希望为某个参数添加一个标签，可以使用一个下划线(_)来代替一个明确的参数标签。
      // 如果一个参数有一个标签，那么在调用的时候必须使用标签来标记这个参数。

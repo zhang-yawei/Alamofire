@@ -27,6 +27,8 @@ import Foundation
 /// HTTP method definitions.
 ///
 /// See https://tools.ietf.org/html/rfc7231#section-4.3
+
+// http 方法的枚举
 public enum HTTPMethod: String {
     case options = "OPTIONS"
     case get     = "GET"
@@ -42,6 +44,8 @@ public enum HTTPMethod: String {
 // MARK: -
 
 /// A dictionary of parameters to apply to a `URLRequest`.
+
+// 定义类的别名
 public typealias Parameters = [String: Any]
 
 /// A type used to define how a set of parameters are applied to a `URLRequest`.
@@ -121,11 +125,14 @@ public struct URLEncoding: ParameterEncoding {
     ///
     /// - returns: The encoded request.
     public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+        // 取出request
         var urlRequest = try urlRequest.asURLRequest()
-
+// 如果parameters等于nil,直接返回原request
         guard let parameters = parameters else { return urlRequest }
 
+        // 默认get
         if let method = HTTPMethod(rawValue: urlRequest.httpMethod ?? "GET"), encodesParametersInURL(with: method) {
+            //把参数编码在url里
             guard let url = urlRequest.url else {
                 throw AFError.parameterEncodingFailed(reason: .missingURL)
             }
@@ -136,6 +143,7 @@ public struct URLEncoding: ParameterEncoding {
                 urlRequest.url = urlComponents.url
             }
         } else {
+            // 参数放在body里 post
             if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
                 urlRequest.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
             }
@@ -245,6 +253,7 @@ public struct URLEncoding: ParameterEncoding {
         return components.map { "\($0)=\($1)" }.joined(separator: "&")
     }
 
+    // 是否把参数编码到数组里呢? get,head,delete是的.
     private func encodesParametersInURL(with method: HTTPMethod) -> Bool {
         switch destination {
         case .queryString:

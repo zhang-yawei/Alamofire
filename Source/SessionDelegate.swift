@@ -161,6 +161,7 @@ open class SessionDelegate: NSObject {
     // MARK: Properties
 
     var retrier: RequestRetrier?
+    // delegate的sessionManager
     weak var sessionManager: SessionManager?
 
     private var requests: [Int: Request] = [:]

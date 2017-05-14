@@ -48,10 +48,15 @@ open class SessionManager {
     
    // 如果你需要使用与Swift保留关键字相同的名称作为常量或者变量名，你可以使用反引号(`)将关键字包围的方 式将其作为名字使用。无论如何，你应当避免使用关键字作为常量或变量名，除非你别无选择。
 
+    // 静态方法,工厂模式生成SessionManager实例
+    
     open static let `default`: SessionManager = {
         let configuration = URLSessionConfiguration.default
+        // 添加header
         configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
 
+    
+        // 默认构造方法么
         return SessionManager(configuration: configuration)
     }()
 
@@ -172,12 +177,24 @@ open class SessionManager {
     ///                                       challenges. `nil` by default.
     ///
     /// - returns: The new `SessionManager` instance.
+    
+    // 有默认值的参数
+
+    
+    /// 生成SessionManager
+    ///
+    /// - parameter configuration:            <#configuration description#>
+    /// - parameter delegate:                 <#delegate description#>
+    /// - parameter serverTrustPolicyManager: <#serverTrustPolicyManager description#>
+    ///
+    /// - returns: <#return value description#>
     public init(
         configuration: URLSessionConfiguration = URLSessionConfiguration.default,
         delegate: SessionDelegate = SessionDelegate(),
         serverTrustPolicyManager: ServerTrustPolicyManager? = nil)
     {
         self.delegate = delegate
+        // 根据 configuration delegete queue 生成sesison
         self.session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
 
         commonInit(serverTrustPolicyManager: serverTrustPolicyManager)
@@ -205,16 +222,25 @@ open class SessionManager {
     }
 
     private func commonInit(serverTrustPolicyManager: ServerTrustPolicyManager?) {
+        // 设置session的安全策略管理者
         session.serverTrustPolicyManager = serverTrustPolicyManager
 
         delegate.sessionManager = self
 
+        // 闭包capture 弱self
         delegate.sessionDidFinishEventsForBackgroundURLSession = { [weak self] session in
             guard let strongSelf = self else { return }
             DispatchQueue.main.async { strongSelf.backgroundCompletionHandler?() }
         }
     }
 
+    // 析构器
+    /*析构器是在实例释放发生前被自动调用。你不能主动调用析构器。子类继承了父类的析构器，并且在子类析构器
+     实现的最后，父类的析构器会被自动调用。即使子类没有提供自己的析构器，父类的析构器也同样会被调用。
+     因为直到实例的析构器被调用后，实例才会被释放，所以析构器可以访问实例的所有属性，并且可以根据那些属
+     性可以修改它的行为(比如查找一个需要被关闭的文件)。
+     
+     */
     deinit {
         session.invalidateAndCancel()
     }
