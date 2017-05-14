@@ -40,6 +40,7 @@ class DetailViewController: UITableViewController {
             oldValue?.cancel()
 
             title = request?.description
+            // 链式调用
             refreshControl?.endRefreshing()
             headers.removeAll()
             body = nil
@@ -81,6 +82,7 @@ class DetailViewController: UITableViewController {
 
         let start = CACurrentMediaTime()
 
+        // 请求完成的闭包
         let requestComplete: (HTTPURLResponse?, Result<String>) -> Void = { response, result in
             let end = CACurrentMediaTime()
             self.elapsedTime = end - start
@@ -111,6 +113,7 @@ class DetailViewController: UITableViewController {
                 requestComplete(response.response, response.result)
             }
         } else if let request = request as? DownloadRequest {
+            // 尾随闭包
             request.responseString { response in
                 requestComplete(response.response, response.result)
             }
