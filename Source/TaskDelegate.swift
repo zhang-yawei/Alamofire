@@ -70,13 +70,18 @@ open class TaskDelegate: NSObject {
 
     // MARK: URLSessionTaskDelegate
     
+    // 重定向
     var taskWillPerformHTTPRedirection: ((URLSession, URLSessionTask, HTTPURLResponse, URLRequest) -> URLRequest?)?
+    // 授权
     var taskDidReceiveChallenge: ((URLSession, URLSessionTask, URLAuthenticationChallenge) -> (URLSession.AuthChallengeDisposition, URLCredential?))?
+    
     var taskNeedNewBodyStream: ((URLSession, URLSessionTask) -> InputStream?)?
+    // 完成,结束
     var taskDidCompleteWithError: ((URLSession, URLSessionTask, Error?) -> Void)?
 
     @objc(URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:)
     
+    // 重定向的时候
     func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
@@ -87,6 +92,7 @@ open class TaskDelegate: NSObject {
         var redirectRequest: URLRequest? = request
 
         if let taskWillPerformHTTPRedirection = taskWillPerformHTTPRedirection {
+            // 闭包的方式
             redirectRequest = taskWillPerformHTTPRedirection(session, task, response, request)
         }
 

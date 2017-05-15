@@ -170,6 +170,7 @@ open class SessionDelegate: NSObject {
     /// Access the task delegate for the specified task in a thread-safe manner.
     open subscript(task: URLSessionTask) -> Request? {
         get {
+            //可以使用 defer 语句在即将离开当前代码块时执行一系列语句。该语句让你能执行一些必要的清理工作，不管是 以何种方式离开当前代码块的——无论是由于抛出错误而离开，还是由于诸如 return 或者 break 的语句。例 如，你可以用 defer 语句来确保文件描述符得以关闭，以及手动分配的内存得以释放。
             lock.lock() ; defer { lock.unlock() }
             return requests[task.taskIdentifier]
         }
@@ -403,6 +404,7 @@ extension SessionDelegate: URLSessionTaskDelegate {
     {
         if let taskDidSendBodyData = taskDidSendBodyData {
             taskDidSendBodyData(session, task, bytesSent, totalBytesSent, totalBytesExpectedToSend)
+            // 网络请求,统一回调到SessionDelegate,在分发到task各自的delegate.
         } else if let delegate = self[task]?.delegate as? UploadTaskDelegate {
             delegate.URLSession(
                 session,

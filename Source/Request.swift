@@ -88,7 +88,7 @@ open class Request {
  */
     public typealias ProgressHandler = (Progress) -> Void
 
-    // 带有关联值的枚举.
+    // 带有关联值的枚举.可以把关联值取出的
     enum RequestTask {
         case data(TaskConvertible?, URLSessionTask?)
         case download(TaskConvertible?, URLSessionTask?)
@@ -140,6 +140,7 @@ open class Request {
     init(session: URLSession, requestTask: RequestTask, error: Error? = nil) {
         self.session = session
 
+        // 根据不同的请求,初始化出不同的taskDelegate,实现不同的协议方法.
         switch requestTask {
         case .data(let originalTask, let task):
             taskDelegate = DataTaskDelegate(task: task)
@@ -362,6 +363,7 @@ open class DataRequest: Request {
 
     // MARK: Helper Types
 
+    // 实现 taskConvertible
     struct Requestable: TaskConvertible {
         let urlRequest: URLRequest
 
@@ -455,6 +457,7 @@ open class DownloadRequest: Request {
     /// temporary file written to during the download process. The closure takes two arguments: the temporary file URL
     /// and the URL response, and returns a two arguments: the file URL where the temporary file should be moved and
     /// the options defining how the file should be moved.
+    //定义闭包类,类似typedef
     public typealias DownloadFileDestination = (
         _ temporaryURL: URL,
         _ response: HTTPURLResponse)
@@ -468,6 +471,7 @@ open class DownloadRequest: Request {
             do {
                 let task: URLSessionTask
 
+                // 下载的时候由request初始化,或者resumeData初始化
                 switch self {
                 case let .request(urlRequest):
                     let urlRequest = try urlRequest.adapt(using: adapter)

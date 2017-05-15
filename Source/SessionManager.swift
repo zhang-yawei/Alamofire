@@ -195,6 +195,7 @@ open class SessionManager {
     {
         self.delegate = delegate
         // 根据 configuration delegete queue 生成sesison
+        // session的delegate是sessionDeelgate.  sessionDelegate有了回调
         self.session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
 
         commonInit(serverTrustPolicyManager: serverTrustPolicyManager)
@@ -270,6 +271,8 @@ open class SessionManager {
 
         do {
             originalRequest = try URLRequest(url: url, method: method, headers: headers)
+            
+            // url encoding 的过程处理参数
             let encodedURLRequest = try encoding.encode(originalRequest!, with: parameters)
             return request(encodedURLRequest)
         } catch {
@@ -284,13 +287,16 @@ open class SessionManager {
     /// - parameter urlRequest: The URL request.
     ///
     /// - returns: The created `DataRequest`.
+    // 开始请求
     open func request(_ urlRequest: URLRequestConvertible) -> DataRequest {
         var originalRequest: URLRequest?
 
         do {
             originalRequest = try urlRequest.asURLRequest()
+            // Requestable 结构体初始化 逐一成员构造器
             let originalTask = DataRequest.Requestable(urlRequest: originalRequest!)
 
+            // 生成task
             let task = try originalTask.task(session: session, adapter: adapter, queue: queue)
             let request = DataRequest(session: session, requestTask: .data(originalTask, task))
 
@@ -431,11 +437,14 @@ open class SessionManager {
         -> DownloadRequest
     {
         do {
+            //由reqeust或者resumeData初始化task
             let task = try downloadable.task(session: session, adapter: adapter, queue: queue)
+            // download的request
             let download = DownloadRequest(session: session, requestTask: .download(downloadable, task))
 
             download.downloadDelegate.destination = destination
 
+            // 实现subscribe 协议
             delegate[task] = download
 
             if startRequestsImmediately { download.resume() }
