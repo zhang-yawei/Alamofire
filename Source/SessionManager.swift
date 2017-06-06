@@ -56,7 +56,8 @@ open class SessionManager {
         configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
 
     
-        // 默认构造方法么
+        // 默认构造方法
+        
         return SessionManager(configuration: configuration)
     }()
 

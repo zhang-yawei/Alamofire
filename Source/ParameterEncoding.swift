@@ -253,7 +253,7 @@ public struct URLEncoding: ParameterEncoding {
         return components.map { "\($0)=\($1)" }.joined(separator: "&")
     }
 
-    // 是否把参数编码到数组里呢? get,head,delete是的.
+    // 是否把参数编码到url里呢? get,head,delete是的.
     private func encodesParametersInURL(with method: HTTPMethod) -> Bool {
         switch destination {
         case .queryString:

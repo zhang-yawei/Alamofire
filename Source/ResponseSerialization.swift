@@ -30,8 +30,8 @@ public protocol DataResponseSerializerProtocol {
     
     // 协议的关联类型. 类似泛型
     associatedtype SerializedObject
-
     /// A closure used by response handlers that takes a request, response, data and error and returns a result.
+    
     var serializeResponse: (URLRequest?, HTTPURLResponse?, Data?, Error?) -> Result<SerializedObject> { get }
 }
 
@@ -44,6 +44,7 @@ public struct DataResponseSerializer<Value>: DataResponseSerializerProtocol {
 
     /// A closure used by response handlers that takes a request, response, data and error and returns a result.
     
+    // 解析response的方法
     public var serializeResponse: (URLRequest?, HTTPURLResponse?, Data?, Error?) -> Result<Value>
 
     /// Initializes the `ResponseSerializer` instance with the given serialize response closure.

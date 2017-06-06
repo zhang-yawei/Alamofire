@@ -71,6 +71,8 @@ public struct DefaultDataResponse {
 // MARK: -
 
 /// Used to store all data associated with a serialized response of a data or upload request.
+
+// 带有result的Response
 public struct DataResponse<Value> {
     /// The URL request sent to the server.
     public let request: URLRequest?
@@ -122,6 +124,7 @@ public struct DataResponse<Value> {
 
 // MARK: -
 
+// 为response添加description
 extension DataResponse: CustomStringConvertible, CustomDebugStringConvertible {
     /// The textual representation used when written to an output stream, which includes whether the result was a
     /// success or failure.
@@ -146,6 +149,7 @@ extension DataResponse: CustomStringConvertible, CustomDebugStringConvertible {
 
 // MARK: -
 
+// 给DataResponse添加map扩展
 extension DataResponse {
     /// Evaluates the specified closure when the result of this `DataResponse` is a success, passing the unwrapped
     /// result value as a parameter.
@@ -205,6 +209,8 @@ extension DataResponse {
 // MARK: -
 
 /// Used to store all data associated with an non-serialized response of a download request.
+
+// 下载response
 public struct DefaultDownloadResponse {
     /// The URL request sent to the server.
     public let request: URLRequest?
