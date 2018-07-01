@@ -44,7 +44,6 @@ public enum HTTPMethod: String {
 // MARK: -
 
 /// A dictionary of parameters to apply to a `URLRequest`.
-
 // 定义类的别名
 public typealias Parameters = [String: Any]
 
@@ -249,7 +248,7 @@ public struct URLEncoding: ParameterEncoding {
             let value = parameters[key]!
             components += queryComponents(fromKey: key, value: value)
         }
-
+        
         return components.map { "\($0)=\($1)" }.joined(separator: "&")
     }
 
