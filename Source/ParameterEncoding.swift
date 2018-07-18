@@ -29,6 +29,9 @@ import Foundation
 /// See https://tools.ietf.org/html/rfc7231#section-4.3
 
 // http 方法的枚举
+
+// string ,是枚举指定原始值. 结构体的原始值,必须是统一类型.
+// 使用枚举成员的rawValue属性可以访问该枚举成员的原始值：
 public enum HTTPMethod: String {
     case options = "OPTIONS"
     case get     = "GET"
@@ -89,6 +92,7 @@ public struct URLEncoding: ParameterEncoding {
     // MARK: Properties
 
     /// Returns a default `URLEncoding` instance.
+    // 加`xx`意为这里的default不再作为关键字使用.
     public static var `default`: URLEncoding { return URLEncoding() }
 
     /// Returns a `URLEncoding` instance with a `.methodDependent` destination.
